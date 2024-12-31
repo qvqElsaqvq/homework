@@ -26,26 +26,24 @@ public:
     void SetHeatThreshold(int heatThreshold){ heat_threshold_ = heatThreshold; } //设置热量上限
     void SetBlood(int blood){ blood_ = blood; } //设置血量
     void SetHeat(int heat){ heat_ = heat; } //设置热量
-    void SetTeam(int team){ team_ = team; }; //设置所属队伍
-    void SetFeature(int feature){ feature_ = feature; }; //设置机器人标识符
-    void SetLevel(int level){ level_ = level; }; //设置当前等级
-    void SetStatus(bool status){ status_ = status; }; //设置是否存活
-    void SetLastTime(int last_time){ last_time_ = last_time; }; //设置上次处理该机器人的时间
-    void SetType(int type){ type_ = type; };
-    int GetBloodThreshold(){ return blood_threshold_; }
-    int GetHeatThreshold(){ return heat_threshold_; }
-    int GetBlood(){ return blood_; }
-    int GetHeat(){ return heat_; }
-    int GetTeam(){ return team_; }
-    int GetFeature(){ return feature_; }
-    int GetLevel(){ return level_; }
-    bool GetStatus(){ return status_; }
-    int GetLastTime(){ return last_time_; }
-    int GetType(){ return type_; }
+    void SetTeam(int team){ team_ = team; } //设置所属队伍
+    void SetFeature(int feature){ feature_ = feature; } //设置机器人标识符
+    void SetLevel(int level){ level_ = level; } //设置当前等级
+    void SetStatus(bool status){ status_ = status; } //设置是否存活
+    void SetLastTime(int last_time){ last_time_ = last_time; } //设置上次处理该机器人的时间
+    void SetType(int type){ type_ = type; } //设置机器人类型
+    [[nodiscard]] int GetBloodThreshold() const { return blood_threshold_; } //获得血量上限
+    [[nodiscard]] int GetHeatThreshold() const{ return heat_threshold_; } //获得热量上限
+    [[nodiscard]] int GetBlood() const{ return blood_; } //获得血量
+    [[nodiscard]] int GetHeat() const{ return heat_; } //获得热量
+    [[nodiscard]] int GetTeam() const{ return team_; } //获得所属队伍
+    [[nodiscard]] int GetFeature() const{ return feature_; } //获得机器人标识符
+    [[nodiscard]] int GetLevel() const{ return level_; } //获得等级
+    [[nodiscard]] bool GetStatus() const{ return status_; } //获得存活状态
+    [[nodiscard]] int GetLastTime() const{ return last_time_; } //获得上一次接收指令时间
+    [[nodiscard]] int GetType() const{ return type_; } //获得机器人类型
 
-    void Print() { //输出被击毁机器人的信息
-        std::cout << "D " << team_ << " " << feature_ << std::endl;
-    }
+    void Print() const { std::cout << "D " << team_ << " " << feature_ << std::endl; } //输出被击毁机器人的信息
 
 protected:
     int blood_threshold_; //血量上限
@@ -56,8 +54,8 @@ protected:
     int feature_; //机器人标识符
     int level_; //当前等级
     bool status_; //当前状态（是否存活）
-    int last_time_;
-    int type_;
+    int last_time_; //上一次接收指令时间
+    int type_; //机器人类型
 };
 
 #endif //ROBOT_H

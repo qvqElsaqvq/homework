@@ -105,6 +105,7 @@ void Manage::Read(int time, char id, int team, int feature, int param) {
                 Update(robot);
             }
             break;
+        default: ;
     }
 }
 
