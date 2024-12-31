@@ -17,14 +17,7 @@ Manage::Manage(int N) {
 }
 
 bool Manage::isOverHeat(std::shared_ptr<Robot> &robot) {
-    int stored_heat;
-    if(robot->GetHeat() > time_ - robot->GetLastTime()) { //判断是否有热量剩余
-        stored_heat = robot->GetHeat() - time_ + robot->GetLastTime() + heating_; //当前存储热量=原先热量+新增热量
-    }
-    else {
-        stored_heat = heating_; //当前存储热量=新增热量
-    }
-    if(stored_heat - robot->GetHeatThreshold() >= robot->GetBlood()) { //是否超热量死亡
+    if(robot->GetHeat() > robot->GetHeatThreshold()) { //判断是否超热量
         return true;
     }
     return false;
@@ -35,16 +28,15 @@ void Manage::SaveHeat(std::shared_ptr<Robot> &robot) {
         robot->SetLastTime(time_);
         return;
     }
-    if(isOverHeat(robot)) { //已经超热量死亡
-        robot->Print();
-        robot->SetStatus(false);
-        robot->SetLastTime(time_);
-        return;
-    }
     int current_heat = std::max(robot->GetHeat() - time_ + robot->GetLastTime(), 0); //剩余热量
-    if(robot->GetHeat() > robot->GetHeatThreshold()) { //超热量上限扣血
-        robot->SetBlood(robot->GetBlood() - std::min(time_ - robot->GetLastTime(),
-            robot->GetHeat() - robot->GetHeatThreshold()));
+    if(isOverHeat(robot)) { //超热量上限扣血
+        robot->SetBlood(std::max(robot->GetBlood() - std::min(time_ - robot->GetLastTime(),
+            robot->GetHeat() - robot->GetHeatThreshold()), 0));
+    }
+    if(robot->GetBlood() == 0) { //血量为0
+        robot->SetStatus(false);
+        robot->Print();
+        return;
     }
     robot->SetHeat(current_heat + heating_);
     robot->SetLastTime(time_);
@@ -82,25 +74,27 @@ void Manage::Read(int time, char id, int team, int feature, int param) {
     team_ = team;
     feature_ = feature;
     std::shared_ptr<Robot> robot = std::make_shared<Robot>();
+    for(auto &i : robots_) {
+        SaveHeat(i);
+    }
     switch (id_) {
-        case 65:
+        case 65: //A
             type_ = param;
             CreateRobot(robot);
             break;
-        case 70:
+        case 70: //F
             damage_ = param;
             if(FindRobot(robot)) {
-                SaveHeat(robot);
                 SaveBlood(robot);
             }
             break;
-        case 72:
+        case 72: //H
             heating_ = param;
             if(FindRobot(robot)) {
                 SaveHeat(robot);
             }
             break;
-        case 85:
+        case 85: //U
             level_ = param;
             if(FindRobot(robot)) {
                 Update(robot);

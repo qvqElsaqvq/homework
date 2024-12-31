@@ -64,10 +64,10 @@ public:
     void Update(std::shared_ptr<Robot> &robot);
 
     /*
-     * @brief 判断是否超热量死亡
+     * @brief 判断是否超热量
      * @param std::shared_ptr<Robot> &robot 机器人的引用
-     * @return true 超热量死亡
-     * @return false 未超热量死亡
+     * @return true 超热量
+     * @return false 未超热量
      */
     bool isOverHeat(std::shared_ptr<Robot> &robot);
 
