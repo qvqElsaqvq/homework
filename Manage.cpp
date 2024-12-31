@@ -35,8 +35,9 @@ void Manage::SaveHeat(std::shared_ptr<Robot> &robot) {
         robot->SetLastTime(time_);
         return;
     }
-    if(isOverHeat(robot)) { //不是步兵或已经死亡，结束处理
+    if(isOverHeat(robot)) { //已经超热量死亡
         robot->Print();
+        robot->SetStatus(false);
         robot->SetLastTime(time_);
         return;
     }
@@ -116,9 +117,21 @@ void Manage::Update(std::shared_ptr<Robot> &robot) {
     }
     if(robot->GetLevel() < level_) {
         robot->SetLevel(level_);
-        robot->SetBloodThreshold(robot->GetBloodThreshold() + (level_ - 1) * 50);
+        switch(level_) {
+            case 1:
+                robot->SetBloodThreshold(100);
+                robot->SetHeatThreshold(100);
+                break;
+            case 2:
+                robot->SetBloodThreshold(150);
+                robot->SetHeatThreshold(200);
+                break;
+            case 3:
+                robot->SetBloodThreshold(250);
+                robot->SetHeatThreshold(300);
+                break;
+        }
         robot->SetBlood(robot->GetBloodThreshold());
-        robot->SetHeatThreshold(robot->GetHeatThreshold() + 100);
     }
     robot->SetLastTime(time_);
 }

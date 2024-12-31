@@ -14,7 +14,7 @@ public:
         blood_threshold_ = 300;
         blood_ = blood_threshold_;
         heat_threshold_ = 0;
-        heat_ = heat_threshold_;
+        heat_ = 0;
         team_ = 0;
         feature_ = 0;
         level_ = 0;
@@ -43,7 +43,10 @@ public:
     [[nodiscard]] int GetLastTime() const{ return last_time_; } //获得上一次接收指令时间
     [[nodiscard]] int GetType() const{ return type_; } //获得机器人类型
 
-    void Print() const { std::cout << "D " << team_ << " " << feature_ << std::endl; } //输出被击毁机器人的信息
+    void Print() const {
+        std::cout << "D " << team_ << " " << feature_ << std::endl;
+        std::cin.ignore();
+    } //输出被击毁机器人的信息
 
 protected:
     int blood_threshold_; //血量上限

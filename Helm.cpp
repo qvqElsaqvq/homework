@@ -8,7 +8,7 @@ Helm::Helm() {
     blood_threshold_ = 100;
     blood_ = blood_threshold_;
     heat_threshold_ = 100;
-    heat_ = heat_threshold_;
+    heat_ = 0;
     team_ = 0;
     feature_ = 0;
     level_ = 1;
